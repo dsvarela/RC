@@ -5,76 +5,55 @@ Gp = (-0.07988 *s^4 - 0.003315 *s^3 - 0.8677* s^2 + 0.006493* s - 0.03458)/...
 Gv = (0.2204 *s^4 + 0.02348 *s^3 + 2.394* s^2 + 0.003981 *s + 0.09541)/...
     (s^5 + 0.5979 *s^4 + 10.98 *s^3 + 4.709 *s^2 + 0.5421 *s + 0.1827);
 
-%%
-% C= -2.759 s^2 - 0.003532 s - 0.1104 / s^3 + 2 s^2 + s
-% beta = 10;
-% T = 1/1.97;
-% LagC = beta*(T*s+1)/(beta*T*s+1);
-% Gc = -.023/s*LagC;
-% PIDap = K/Ti * (1+s*Ti)*(1+s*Td)/s/(1+s*Tf);
-% Gc = K/Ti * (1+ s*(Ti+Tf) + Ti*(Td+Tf)*s^2)/s/(1+s*Tf);
-% LP2 = w^2/(s^2 + 2*w*b*s + w^2)
-% N = (s^2 + 2*w*b1*s + w^2)(s^2 + 2*w*b2*s + w^2)
-%I;
-% 
-% w = .21;
-% b = .25; % 0.01
-% K = -.33;
-% Gc = K*(s^2 + 2*w*b*s + w^2)/s/(s^2 + 2*w*.5*s + w^2);
+Gc1 = -.26/s;
 
-Gc0 = -.18/s;
+Gc2 = -.225/s/(5*s+1);
 
-beta = 10;
-T = 1/1.97;
-LagC = beta*(T*s+1)/(beta*T*s+1);
-Gc1 = -.0443/s/(s+.197);
+w = sqrt(.04101);
+b2 = .295;
+K = -.3128;
+Gc3 = K*(s^2 + 0.02109*s + .04101)/s/(s^2 + 2*w*b2*s + .04101);
 
-w = .21;
-b = .25; % 0.01
-K = -.33;
-Gc = K*(s^2 + 2*w*b*s + w^2)/s/(s^2 + 2*w*.5*s + w^2);
 
-L = Gc * Gp;
 close all
 figure('Position', [0 40 960 960]);
 subplot(2,1,1);
-bode(Gc, Gc1);
+bode(Gc1, Gc2, Gc3);
 subplot(2,1,2)
-bode(Gc*Gp, Gc1*Gp);
+bode(Gc1*Gp, Gc2*Gp, Gc3*Gp);
 
 figure('Position', [960 40 960 960]);
-CL = feedback(L,1);
-DL = (Gv/(1+L));
 
 subplot(2,1,1);
-step(CL);
-hold on
 step(feedback(Gc1*Gp,1));
-% step(feedback(Gc1*Gp,1));
-hold off
-subplot(2,1,2)
-step(DL);
 hold on
-%step((Gv/(1+Gc1*Gp)));
-% step((Gv/(1+Gc2*Gp)));
+step(feedback(Gc2*Gp,1));
+step(feedback(Gc3*Gp,1));
+subplot(2,1,2);
+step(Gv / (1+ Gc1*Gp));
+hold on
+step(Gv / (1+ Gc2*Gp));
+step(Gv / (1+ Gc3*Gp));
 hold off
-stepinfo(CL).Overshoot,stepinfo(CL).SettlingTime
 
-%% DR
+%%
+Gc  = Gc;
 close all
-%P + Lag Filter;
-%Best for Reference Tracking
-w = 1.97;
-b1 = .1;
-b2 = 10;
-N = (s^2 + 2*w*b1*s+w^2)/(s^2 + 2*w*b2*s+w^2);
-Gcd = -.2  *(s^2 + 2*w*b1*s+w^2)/(s^2 + 2*w*b2*s+w^2)/s;
 
-L = Gcd*Gp;
-CL = Gcd*Gp/(1+Gcd*Gp);
-S = 1/(1+Gcd*Gp);   
-figure;
-bode(Gp, Gcd, L,S)
-figure;
-step(Gv*S)
-[stepinfo(CL).Overshoot, stepinfo(CL).SettlingTime];
+figure('Position', [0 40 960*2 960]);
+step(feedback(-16.5*Gp,1));
+set(gca, 'Fontsize', 16);
+grid on;
+xlabel('Time','Fontsize', 20,'FontWeight','bold' );
+ylabel('Amplitude','Fontsize', 20,'FontWeight','bold')
+legend('$Gp$','Interpreter','Latex', 'Fontsize', 24, 'Location', 'southeast');
+title('Step Response for the Closed Loop Plant with K=-16.5', ...
+'Fontsize', 24,'FontWeight','bold','Interpreter','Latex')
+
+%%
+figure('Position', [0 40 960*2 960]);
+bode(-16.5*Gp);
+grid on;
+legend('$Gc1$','$Gc2$','$Gc3$','Interpreter','Latex', 'Fontsize', 24, 'Location', 'southeast')
+title('Bode Diagram of $\mathbf{L(j\omega)}$ (Comparison)', ...
+'Fontsize', 24,'FontWeight','bold','Interpreter','Latex')

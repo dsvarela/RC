@@ -1,0 +1,296 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>PIDD</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-11-25"><meta name="DC.source" content="PIDD.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#3">DR</a></li></ul></div><pre class="codeinput">s = tf(<span class="string">'s'</span>);
+Gp = (-0.07988 *s^4 - 0.003315 *s^3 - 0.8677* s^2 + 0.006493* s - 0.03458)/<span class="keyword">...</span>
+    (s^5 + 0.5979* s^4 + 10.98 *s^3 + 4.709 *s^2 + 0.5421* s + 0.1827);
+
+Gv = (0.2204 *s^4 + 0.02348 *s^3 + 2.394* s^2 + 0.003981 *s + 0.09541)/<span class="keyword">...</span>
+    (s^5 + 0.5979 *s^4 + 10.98 *s^3 + 4.709 *s^2 + 0.5421 *s + 0.1827);
+</pre><p>C= -2.759 s^2 - 0.003532 s - 0.1104 / s^3 + 2 s^2 + s beta = 10; T = 1/1.97; LagC = beta*(T*s+1)/(beta*T*s+1); Gc = -.023/s*LagC; PIDap = K/Ti * (1+s*Ti)*(1+s*Td)/s/(1+s*Tf); Gc = K/Ti * (1+ s*(Ti+Tf) + Ti*(Td+Tf)*s^2)/s/(1+s*Tf); LP2 = w^2/(s^2 + 2*w*b*s + w^2) N = (s^2 + 2*w*b1*s + w^2)(s^2 + 2*w*b2*s + w^2)</p><pre class="codeinput"><span class="comment">%I;</span>
+<span class="comment">%</span>
+
+w = .21;
+b = .25; <span class="comment">% 0.01</span>
+K = -.33;
+Gc1 = K*(s^2 + 2*w*b*s + w^2)/s/(s^2 + 2*w*.5*s + w^2);
+
+Gc0 = -.18/s;
+
+beta = 10;
+T = 1/1.97;
+LagC = beta*(T*s+1)/(beta*T*s+1);
+Gc = -.0443/s/(s+.197);
+
+<span class="comment">% w = .21;</span>
+<span class="comment">% b = .25; % 0.01</span>
+<span class="comment">% K = -.33;</span>
+<span class="comment">% Gc = K*(s^2 + 2*w*b*s + w^2)/s/(s^2 + 2*w*.5*s + w^2);</span>
+
+<span class="comment">% Gc1 = -.247*(1/.7*s+1)/s/(1/.2*s+1);</span>
+<span class="comment">%</span>
+L = Gc * Gp;
+close <span class="string">all</span>
+figure(<span class="string">'Position'</span>, [0 40 960 960]);
+subplot(2,1,1);
+bode(Gc, Gc1);
+subplot(2,1,2)
+bode(Gc*Gp, Gc1*Gp);
+
+figure(<span class="string">'Position'</span>, [960 40 960 960]);
+CL = feedback(L,1);
+DL = (Gv/(1+L));
+
+subplot(2,1,1);
+step(CL);
+hold <span class="string">on</span>
+step(feedback(Gc1*Gp,1));
+<span class="comment">% step(feedback(Gc1*Gp,1));</span>
+hold <span class="string">off</span>
+
+subplot(2,1,2)
+step(DL);
+hold <span class="string">on</span>
+<span class="comment">%step((Gv/(1+Gc1*Gp)));</span>
+<span class="comment">% step((Gv/(1+Gc2*Gp)));</span>
+hold <span class="string">off</span>
+stepinfo(CL).Overshoot,stepinfo(CL).SettlingTime
+</pre><pre class="codeoutput">
+ans =
+
+    1.0047
+
+
+ans =
+
+   59.2985
+
+</pre><img vspace="5" hspace="5" src="PIDD_01.png" alt=""> <img vspace="5" hspace="5" src="PIDD_02.png" alt=""> <h2 id="3">DR</h2><pre class="codeinput">close <span class="string">all</span>
+<span class="comment">%P + Lag Filter;</span>
+<span class="comment">%Best for Reference Tracking</span>
+w = 1.97;
+b1 = .1;
+b2 = 10;
+N = (s^2 + 2*w*b1*s+w^2)/(s^2 + 2*w*b2*s+w^2);
+Gcd = -.2  *(s^2 + 2*w*b1*s+w^2)/(s^2 + 2*w*b2*s+w^2)/s;
+
+L = Gcd*Gp;
+CL = Gcd*Gp/(1+Gcd*Gp);
+S = 1/(1+Gcd*Gp);
+figure;
+bode(Gp, Gcd, L,S)
+figure;
+step(Gv*S)
+[stepinfo(CL).Overshoot, stepinfo(CL).SettlingTime];
+
+figure;
+[mag,phase,wout] = bode(-9.1*Gp);
+Mag=20*log10(mag(:));Phase=phase(:);
+title(<span class="string">'Bode Plot of L= GK for Gain K=-9.1'</span>, <span class="string">'Fontsize'</span>, 20);
+subplot(2,1,1);semilogx(wout,Mag,<span class="string">'LineWidth'</span>,2);grid <span class="string">on</span>;
+ylabel(<span class="string">'Magnitude (dB)'</span>, <span class="string">'Fontsize'</span>, 14, <span class="string">'fontweight'</span>,<span class="string">'bold'</span>);
+
+subplot(2,1,2);semilogx(wout,Phase,<span class="string">'LineWidth'</span>,2);grid <span class="string">on</span>;
+xlabel(<span class="string">'Frequency (rad/s)'</span>, <span class="string">'Fontsize'</span>, 14, <span class="string">'fontweight'</span>,<span class="string">'bold'</span>);
+ylabel(<span class="string">'Phase (deg)'</span>, <span class="string">'Fontsize'</span>, 14, <span class="string">'fontweight'</span>,<span class="string">'bold'</span>);
+
+<span class="comment">% legend({'$g_d(k) = 15$s','$g_d(k) = 45$s'}, 'Location','northeast', 'Interpreter', 'Latex', 'Fontsize', 20);</span>
+xlabel(<span class="string">'Simulation Time [min]'</span>, <span class="string">'Fontsize'</span>, 14, <span class="string">'fontweight'</span>,<span class="string">'bold'</span>);
+ylabel(<span class="string">'Green Light Time [s]'</span>, <span class="string">'Fontsize'</span>, 14, <span class="string">'fontweight'</span>,<span class="string">'bold'</span>);
+set(gca, <span class="string">'Fontsize'</span>, 14)
+grid <span class="string">on</span>
+</pre><img vspace="5" hspace="5" src="PIDD_03.png" alt=""> <img vspace="5" hspace="5" src="PIDD_04.png" alt=""> <img vspace="5" hspace="5" src="PIDD_05.png" alt=""> <pre class="codeinput">bode(Gp)
+grid
+Fh = gcf;                                                   <span class="comment">% Handle To Current Figure</span>
+Kids = Fh.Children;                                         <span class="comment">% Children</span>
+AxAll = findobj(Kids,<span class="string">'Type'</span>,<span class="string">'Axes'</span>);                        <span class="comment">% Handles To Axes</span>
+Ax1 = AxAll(1);                                             <span class="comment">% First Set Of Axes</span>
+LinesAx1 = findobj(Ax1,<span class="string">'Type'</span>,<span class="string">'Line'</span>);                      <span class="comment">% Handle To Lines</span>
+LinesAx1(2).LineWidth = 2;                                  <span class="comment">% Set &#8216;LineWidth&#8217;</span>
+Ax2 = AxAll(2);                                             <span class="comment">% Second Set Of Axes</span>
+LinesAx2 = findobj(Ax2,<span class="string">'Type'</span>,<span class="string">'Line'</span>);                      <span class="comment">% Handle To Lines</span>
+LinesAx2(2).LineWidth = 2;                                  <span class="comment">% Set &#8216;LineWidth&#8217;</span>
+</pre><img vspace="5" hspace="5" src="PIDD_06.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+s = tf('s');
+Gp = (-0.07988 *s^4 - 0.003315 *s^3 - 0.8677* s^2 + 0.006493* s - 0.03458)/...
+    (s^5 + 0.5979* s^4 + 10.98 *s^3 + 4.709 *s^2 + 0.5421* s + 0.1827);
+
+Gv = (0.2204 *s^4 + 0.02348 *s^3 + 2.394* s^2 + 0.003981 *s + 0.09541)/...
+    (s^5 + 0.5979 *s^4 + 10.98 *s^3 + 4.709 *s^2 + 0.5421 *s + 0.1827);
+
+%%
+% C= -2.759 s^2 - 0.003532 s - 0.1104 / s^3 + 2 s^2 + s
+% beta = 10;
+% T = 1/1.97;
+% LagC = beta*(T*s+1)/(beta*T*s+1);
+% Gc = -.023/s*LagC;
+% PIDap = K/Ti * (1+s*Ti)*(1+s*Td)/s/(1+s*Tf);
+% Gc = K/Ti * (1+ s*(Ti+Tf) + Ti*(Td+Tf)*s^2)/s/(1+s*Tf);
+% LP2 = w^2/(s^2 + 2*w*b*s + w^2)
+% N = (s^2 + 2*w*b1*s + w^2)(s^2 + 2*w*b2*s + w^2)
+%I;
+%
+
+w = .21;
+b = .25; % 0.01
+K = -.33;
+Gc1 = K*(s^2 + 2*w*b*s + w^2)/s/(s^2 + 2*w*.5*s + w^2);
+
+Gc0 = -.18/s;
+
+beta = 10;
+T = 1/1.97;
+LagC = beta*(T*s+1)/(beta*T*s+1);
+Gc = -.0443/s/(s+.197);
+
+% w = .21;
+% b = .25; % 0.01
+% K = -.33;
+% Gc = K*(s^2 + 2*w*b*s + w^2)/s/(s^2 + 2*w*.5*s + w^2);
+
+% Gc1 = -.247*(1/.7*s+1)/s/(1/.2*s+1);
+%
+L = Gc * Gp;
+close all
+figure('Position', [0 40 960 960]);
+subplot(2,1,1);
+bode(Gc, Gc1);
+subplot(2,1,2)
+bode(Gc*Gp, Gc1*Gp);
+
+figure('Position', [960 40 960 960]);
+CL = feedback(L,1);
+DL = (Gv/(1+L));
+
+subplot(2,1,1);
+step(CL);
+hold on
+step(feedback(Gc1*Gp,1));
+% step(feedback(Gc1*Gp,1));
+hold off
+
+subplot(2,1,2)
+step(DL);
+hold on
+%step((Gv/(1+Gc1*Gp)));
+% step((Gv/(1+Gc2*Gp)));
+hold off
+stepinfo(CL).Overshoot,stepinfo(CL).SettlingTime
+%% DR
+close all
+%P + Lag Filter;
+%Best for Reference Tracking
+w = 1.97;
+b1 = .1;
+b2 = 10;
+N = (s^2 + 2*w*b1*s+w^2)/(s^2 + 2*w*b2*s+w^2);
+Gcd = -.2  *(s^2 + 2*w*b1*s+w^2)/(s^2 + 2*w*b2*s+w^2)/s;
+
+L = Gcd*Gp;
+CL = Gcd*Gp/(1+Gcd*Gp);
+S = 1/(1+Gcd*Gp);   
+figure;
+bode(Gp, Gcd, L,S)
+figure;
+step(Gv*S)
+[stepinfo(CL).Overshoot, stepinfo(CL).SettlingTime];
+
+figure;
+[mag,phase,wout] = bode(-9.1*Gp);
+Mag=20*log10(mag(:));Phase=phase(:);
+title('Bode Plot of L= GK for Gain K=-9.1', 'Fontsize', 20);
+subplot(2,1,1);semilogx(wout,Mag,'LineWidth',2);grid on;
+ylabel('Magnitude (dB)', 'Fontsize', 14, 'fontweight','bold');
+
+subplot(2,1,2);semilogx(wout,Phase,'LineWidth',2);grid on;
+xlabel('Frequency (rad/s)', 'Fontsize', 14, 'fontweight','bold');
+ylabel('Phase (deg)', 'Fontsize', 14, 'fontweight','bold');
+
+% legend({'$g_d(k) = 15$s','$g_d(k) = 45$s'}, 'Location','northeast', 'Interpreter', 'Latex', 'Fontsize', 20);
+xlabel('Simulation Time [min]', 'Fontsize', 14, 'fontweight','bold');
+ylabel('Green Light Time [s]', 'Fontsize', 14, 'fontweight','bold');
+set(gca, 'Fontsize', 14)
+grid on
+
+
+%%
+bode(Gp)
+grid
+Fh = gcf;                                                   % Handle To Current Figure
+Kids = Fh.Children;                                         % Children
+AxAll = findobj(Kids,'Type','Axes');                        % Handles To Axes
+Ax1 = AxAll(1);                                             % First Set Of Axes
+LinesAx1 = findobj(Ax1,'Type','Line');                      % Handle To Lines
+LinesAx1(2).LineWidth = 2;                                  % Set ‘LineWidth’
+Ax2 = AxAll(2);                                             % Second Set Of Axes
+LinesAx2 = findobj(Ax2,'Type','Line');                      % Handle To Lines
+LinesAx2(2).LineWidth = 2;                                  % Set ‘LineWidth’   
+##### SOURCE END #####
+--></body></html>
