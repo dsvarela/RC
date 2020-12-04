@@ -3,7 +3,7 @@ close all
 clc
 s = tf('s'); % For transfer functions
 
-load('Assignment_Data_SC42145-mat')
+load('Assignment_Data_SC42145.mat')
 
 [num,den] = ss2tf(A,B,C,D,1);
 Gp = tf(num(1,:),den); % TF - Blade Picth to Rotational Velocity
@@ -64,3 +64,11 @@ legend('$GvS1$','$GvS2$','$GvS3$','Interpreter','Latex',...
 title('Step Response - Disturbance Rejection', ...
 'Fontsize', 18,'FontWeight','bold');
 hold off
+%%
+Ti = 0.2577; Tf = 0.2577; Td = 94.3723; Ap = -0.107;
+
+K = Ap/Tf *(1+s*(Ti+Tf)+s^2*Ti*(Td+Tf))/(s*(1+s*Tf));
+K2 = Ap *(1 + 1/s/Ti  + s*Td/(s*Tf+1));
+L = Gp*K2;
+CL = L/(1+L);
+step(CL)
