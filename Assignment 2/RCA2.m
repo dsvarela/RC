@@ -44,7 +44,7 @@ C2 = C;
 D2 = D(:,1:2);
 Gss = ss(A2,B2,C2,D2);
 Z = tzero(Gss); % RHP zeros are NO MORE!
-
+P = pole(Gss);
 
 %%
 M = 1.8;
@@ -100,42 +100,29 @@ T2 = minreal(T2);
 S2 = minreal(S2);
 
 %%
-time = out.wtf.time;
-lf = 2*.5222*sin(2*pi/1000 * time);
-hf = 0.4*sin(2*pi/20*time);
-subplot(2,1,1)
-plot(out.wtf, time, lf)
-subplot(2,1,2)
-plot(time, out.wtf.data - lf, time ,hf);
+
+% These are good, don't touch 'em.
+% Tb = 1/0.001;
+% a = 0.0001;
+% wu11 = (Tb*s +1)/(a*Tb*s +1); 
+% 
+% Tt = 1/20;
+% b = 10000;
+% wu12 = b*(Tt*s +1)/(b*Tt*s +1); 
+
 %%
-
-% Beta needs to reject the sine with period 1000s -> 0.00628 rad/s. This
-% means we want the weight to be around this and much higher at frequencies
-% higher than that.
-% We pick a lead compensator with a pole after 0.00628 rad/s -> 0.01 rad/s
-% The faster pole should be placed so that the weight is high at
-% frequencies that should be rejected by tau_e action. We pick 0.2.
-Tb = 1/.08;
-a = 0.05;
-wu11 = (Tb*s +1)/(a*Tb*s +1); 
-
-% Tau needs to kick in for high frequencies. Looking at the thing, it looks
-% like high frequencies should be at about 10s -> 0.628rad/s. This means we
-% want the weight to be around this and much higher at frequencies lower
-% than that.
-Tt = 1/.02;
-b = 1/a;
-wu12 = b*(Tt*s +1)/(b*Tt*s +1); 
-    
-wu11 = s/(s+.01)*10;
-wu12 = 1/(s+.1);
+M = 2;
+A = 10^(-4);
+wb = pi*2;
+wu12 = (s/M+wb)/(s+wb*A);
+wu11 = (s+wb*A)/(s/M+wb)/A;
 
 M = 2;
 A = 10^(-4);
 wb = pi*2/100;
 wp11 = (s/M+wb)/(s+wb*A);
 
-bode(wp11);
+bode(wu12,wu11);
 %%
 bode(wu11, wu12)
 %%
@@ -161,3 +148,11 @@ P = minreal(P);
 disp(GAMd);
 Kdss = minreal(Kdss);
 Ldss = minreal(series(Kdss,Gss));
+
+
+%%
+
+M = 2;
+A = 10^(-4);
+wb = pi*2/100;
+wp11 = (s/M+wb)/(s+wb*A);

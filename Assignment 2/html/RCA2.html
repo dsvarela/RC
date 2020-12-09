@@ -1,0 +1,393 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>RCA2</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-12-09"><meta name="DC.source" content="RCA2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput">s = tf(<span class="string">'s'</span>);
+
+load(<span class="string">'Assignment_Data_SC42145.mat'</span>)
+
+[num,den] = ss2tf(A,B,C,D,1);
+g11 = tf(num(1,:),den); <span class="comment">% TF - Blade Picth to Rotational Velocity</span>
+g21 = tf(num(2,:),den); <span class="comment">% TF - Blade Picth to Position</span>
+
+[num,den] = ss2tf(A,B,C,D,2);
+g12 = tf(num(1,:),den); <span class="comment">% TF - Torque to Rotational Velocity</span>
+g22 = tf(num(2,:),den); <span class="comment">% TF - Torque to Position</span>
+
+<span class="comment">% Not needed for now;</span>
+[num,den] = ss2tf(A,B,C,D,3);
+g13 = tf(num(1,:),den); <span class="comment">% TF - Wind Disturbance to Rotational Velocity</span>
+g23 = tf(num(2,:),den); <span class="comment">% TF - Wind Disturbance to Position</span>
+
+
+
+G = [g11 , g12 ; g21 , g22];
+<span class="comment">% G = [g12 , g22 ; g11 , g21];</span>
+fr = @(G,f) [freqresp(G(1,1), f) freqresp(G(1,2), f); freqresp(G(2,1), f) freqresp(G(2,2), f)];
+rga = @(G)  G.*pinv(G.');
+
+<span class="comment">% 1/(1-(freqresp(G(1,2), .8*pi) *freqresp(G(2,1), .8*pi))/(freqresp(G(1,1), .8*pi) *freqresp(G(2,2), .8*pi)))</span>
+
+Gf = fr(G,0.4*2*pi);
+
+<span class="comment">% Successive application of the RGA results in an anti-diagonal matrix,</span>
+<span class="comment">% suggesting we should pair</span>
+RGA = rga(Gf)
+<span class="comment">% RGAi = rga(RGA);</span>
+<span class="comment">% RGAii = rga(RGAi)</span>
+
+
+<span class="comment">% f = 0;</span>
+<span class="comment">% G = [freqresp(g11, f) freqresp(g12, f); freqresp(g21, f) freqresp(g22, f)];</span>
+<span class="comment">% RGA0 = G.*pinv(G.'); % RGA2 = G.*inv(G).'</span>
+</pre><pre class="codeoutput">
+RGA =
+
+  -0.0117 + 0.1068i   1.0117 - 0.1068i
+   1.0117 - 0.1068i  -0.0117 + 0.1068i
+
+</pre><pre class="codeinput">A2 = A;
+B2 = B(:,1:2);
+C2 = C;
+D2 = D(:,1:2);
+Gss = ss(A2,B2,C2,D2);
+Z = tzero(Gss); <span class="comment">% RHP zeros are NO MORE!</span>
+</pre><pre class="codeinput">M = 1.8;
+A = 10^(-4);
+wb = 0.4*pi*2;
+wp11 = (s/M+wb)/(s+wb*A);
+wp22 = .2;
+
+wu11 = 0.01;
+wu22 = (5*10^(-3)*s^2 + 7*10^(-4)*s +5*10^(-5))/(s^2 + 14*10^(-4)*s + 10^(-6));
+
+Wp = [wp11 0; 0 wp22];
+Wu = [wu11 0; 0 wu22];
+Wt = [];
+</pre><pre class="codeinput">[Kss,CL,GAM,INFO]=mixsyn(G,Wp,Wu,Wt);
+
+Kss = minreal(Kss);
+K = tf(Kss);
+Lss = minreal(series(Kss,Gss));
+Ltf = tf(Lss);
+T = feedback(Ltf , eye(2), -1);
+S = feedback(eye(2),G*K);
+T = minreal(T);
+S = minreal(S);
+</pre><pre class="codeoutput">5 states removed.
+5 states removed.
+</pre><p>p11 = [-Wp ; zeros(2,2)]; p12 =  [-Wp*G ; -Wu]; p21 = -eye(2); p22 = -G; P = [p11 , p12; p21, p22];</p><pre class="codeinput"><span class="comment">%Uses the robust control toolbox</span>
+systemnames =<span class="string">'G Wp Wu'</span>; <span class="comment">% Define systems</span>
+inputvar =<span class="string">'[r(2); u(2)]'</span>; <span class="comment">% Input generalized plant</span>
+input_to_G= <span class="string">'[u]'</span>;
+input_to_Wu= <span class="string">'[u]'</span>;
+input_to_Wp= <span class="string">'[r-G]'</span>;
+outputvar= <span class="string">'[Wp; Wu; r-G]'</span>; <span class="comment">% Output generalized plant</span>
+sysoutname=<span class="string">'P'</span>;
+sysic;
+P = minreal(P);
+[K2ss,N2,GAM2] = hinfsyn(P,2,2);
+
+K2ss = minreal(K2ss);
+L2ss = minreal(series(K2ss,Gss));
+L2tf = tf(L2ss);
+T2 = feedback(L2tf , eye(2), -1);
+S2 = feedback(eye(2),L2tf);
+T2 = minreal(T2);
+S2 = minreal(S2);
+</pre><pre class="codeoutput">36 states removed.
+6 states removed.
+</pre><pre class="codeinput">time = out.wtf.time;
+lf = 2*.5222*sin(2*pi/1000 * time);
+hf = 0.4*sin(2*pi/20*time);
+subplot(2,1,1)
+plot(out.wtf, time, lf)
+subplot(2,1,2)
+plot(time, out.wtf.data - lf, time ,hf);
+</pre><img vspace="5" hspace="5" src="RCA2_01.png" alt=""> <pre class="codeinput"><span class="comment">% Beta needs to reject the sine with period 1000s -&gt; 0.00628 rad/s. This</span>
+<span class="comment">% means we want the weight to be around this and much higher at frequencies</span>
+<span class="comment">% higher than that.</span>
+<span class="comment">% We pick a lead compensator with a pole after 0.00628 rad/s -&gt; 0.01 rad/s</span>
+<span class="comment">% The faster pole should be placed so that the weight is high at</span>
+<span class="comment">% frequencies that should be rejected by tau_e action. We pick 0.2.</span>
+Tb = 1/.08;
+a = 0.05;
+wu11 = (Tb*s +1)/(a*Tb*s +1);
+
+<span class="comment">% Tau needs to kick in for high frequencies. Looking at the thing, it looks</span>
+<span class="comment">% like high frequencies should be at about 10s -&gt; 0.628rad/s. This means we</span>
+<span class="comment">% want the weight to be around this and much higher at frequencies lower</span>
+<span class="comment">% than that.</span>
+Tt = 1/.02;
+b = 1/a;
+wu12 = b*(Tt*s +1)/(b*Tt*s +1);
+
+wu11 = s/(s+.01)*10;
+wu12 = 1/(s+.1);
+
+M = 2;
+A = 10^(-4);
+wb = pi*2/100;
+wp11 = (s/M+wb)/(s+wb*A);
+
+bode(wp11);
+</pre><img vspace="5" hspace="5" src="RCA2_02.png" alt=""> <pre class="codeinput">bode(wu11, wu12)
+</pre><img vspace="5" hspace="5" src="RCA2_03.png" alt=""> <pre class="codeinput">Wp = wp11;
+Wu = [wu11, wu12];
+
+G = [g11 , g12];
+Gdss = ss(G);
+<span class="comment">% P = [Wp, Wp*g11 , Wp*g12 ; 0, wu11, wu12; 1, g11, g12];</span>
+<span class="comment">%Uses the robust control toolbox</span>
+systemnames =<span class="string">'G Wp Wu'</span>; <span class="comment">% Define systems</span>
+inputvar =<span class="string">'[d(1); u(2)]'</span>; <span class="comment">% Input generalized plant</span>
+input_to_G= <span class="string">'[u]'</span>;
+input_to_Wu= <span class="string">'[u]'</span>;
+input_to_Wp= <span class="string">'[d+G]'</span>;
+outputvar= <span class="string">'[Wp; Wu; d+G]'</span>; <span class="comment">% Output generalized plant</span>
+sysoutname=<span class="string">'P'</span>;
+sysic;
+P = ss(P);
+P = minreal(P);
+
+[Kdss,Nd,GAMd] = hinfsyn(P,1,2);
+disp(GAMd);
+Kdss = minreal(Kdss);
+Ldss = minreal(series(Kdss,Gss));
+</pre><pre class="codeoutput">17 states removed.
+    0.6313
+
+5 states removed.
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+s = tf('s');
+
+load('Assignment_Data_SC42145.mat')
+
+[num,den] = ss2tf(A,B,C,D,1);
+g11 = tf(num(1,:),den); % TF - Blade Picth to Rotational Velocity
+g21 = tf(num(2,:),den); % TF - Blade Picth to Position
+
+[num,den] = ss2tf(A,B,C,D,2);
+g12 = tf(num(1,:),den); % TF - Torque to Rotational Velocity
+g22 = tf(num(2,:),den); % TF - Torque to Position
+
+% Not needed for now;
+[num,den] = ss2tf(A,B,C,D,3);
+g13 = tf(num(1,:),den); % TF - Wind Disturbance to Rotational Velocity
+g23 = tf(num(2,:),den); % TF - Wind Disturbance to Position
+
+
+
+G = [g11 , g12 ; g21 , g22];
+% G = [g12 , g22 ; g11 , g21];
+fr = @(G,f) [freqresp(G(1,1), f) freqresp(G(1,2), f); freqresp(G(2,1), f) freqresp(G(2,2), f)];
+rga = @(G)  G.*pinv(G.');
+
+% 1/(1-(freqresp(G(1,2), .8*pi) *freqresp(G(2,1), .8*pi))/(freqresp(G(1,1), .8*pi) *freqresp(G(2,2), .8*pi)))
+
+Gf = fr(G,0.4*2*pi);
+
+% Successive application of the RGA results in an anti-diagonal matrix,
+% suggesting we should pair 
+RGA = rga(Gf)
+% RGAi = rga(RGA);
+% RGAii = rga(RGAi)
+
+
+% f = 0;
+% G = [freqresp(g11, f) freqresp(g12, f); freqresp(g21, f) freqresp(g22, f)];
+% RGA0 = G.*pinv(G.'); % RGA2 = G.*inv(G).'
+
+%% 
+A2 = A;
+B2 = B(:,1:2);
+C2 = C;
+D2 = D(:,1:2);
+Gss = ss(A2,B2,C2,D2);
+Z = tzero(Gss); % RHP zeros are NO MORE!
+
+
+%%
+M = 1.8;
+A = 10^(-4);
+wb = 0.4*pi*2;
+wp11 = (s/M+wb)/(s+wb*A);
+wp22 = .2;
+
+wu11 = 0.01;
+wu22 = (5*10^(-3)*s^2 + 7*10^(-4)*s +5*10^(-5))/(s^2 + 14*10^(-4)*s + 10^(-6));
+
+Wp = [wp11 0; 0 wp22];
+Wu = [wu11 0; 0 wu22];
+Wt = [];
+
+%%
+[Kss,CL,GAM,INFO]=mixsyn(G,Wp,Wu,Wt);
+
+Kss = minreal(Kss);
+K = tf(Kss);
+Lss = minreal(series(Kss,Gss));
+Ltf = tf(Lss);
+T = feedback(Ltf , eye(2), -1);
+S = feedback(eye(2),G*K);
+T = minreal(T);
+S = minreal(S);
+
+%%
+% p11 = [-Wp ; zeros(2,2)];
+% p12 =  [-Wp*G ; -Wu];
+% p21 = -eye(2);
+% p22 = -G;
+% P = [p11 , p12; p21, p22];
+
+%Uses the robust control toolbox
+systemnames ='G Wp Wu'; % Define systems
+inputvar ='[r(2); u(2)]'; % Input generalized plant
+input_to_G= '[u]';
+input_to_Wu= '[u]';
+input_to_Wp= '[r-G]';
+outputvar= '[Wp; Wu; r-G]'; % Output generalized plant
+sysoutname='P';
+sysic;
+P = minreal(P);
+[K2ss,N2,GAM2] = hinfsyn(P,2,2);
+
+K2ss = minreal(K2ss);
+L2ss = minreal(series(K2ss,Gss));
+L2tf = tf(L2ss);
+T2 = feedback(L2tf , eye(2), -1);
+S2 = feedback(eye(2),L2tf);
+T2 = minreal(T2);
+S2 = minreal(S2);
+
+%%
+time = out.wtf.time;
+lf = 2*.5222*sin(2*pi/1000 * time);
+hf = 0.4*sin(2*pi/20*time);
+subplot(2,1,1)
+plot(out.wtf, time, lf)
+subplot(2,1,2)
+plot(time, out.wtf.data - lf, time ,hf);
+%%
+
+% Beta needs to reject the sine with period 1000s -> 0.00628 rad/s. This
+% means we want the weight to be around this and much higher at frequencies
+% higher than that.
+% We pick a lead compensator with a pole after 0.00628 rad/s -> 0.01 rad/s
+% The faster pole should be placed so that the weight is high at
+% frequencies that should be rejected by tau_e action. We pick 0.2.
+Tb = 1/.08;
+a = 0.05;
+wu11 = (Tb*s +1)/(a*Tb*s +1); 
+
+% Tau needs to kick in for high frequencies. Looking at the thing, it looks
+% like high frequencies should be at about 10s -> 0.628rad/s. This means we
+% want the weight to be around this and much higher at frequencies lower
+% than that.
+Tt = 1/.02;
+b = 1/a;
+wu12 = b*(Tt*s +1)/(b*Tt*s +1); 
+    
+wu11 = s/(s+.01)*10;
+wu12 = 1/(s+.1);
+
+M = 2;
+A = 10^(-4);
+wb = pi*2/100;
+wp11 = (s/M+wb)/(s+wb*A);
+
+bode(wp11);
+%%
+bode(wu11, wu12)
+%%
+Wp = wp11;
+Wu = [wu11, wu12];
+
+G = [g11 , g12];
+Gdss = ss(G);
+% P = [Wp, Wp*g11 , Wp*g12 ; 0, wu11, wu12; 1, g11, g12];
+%Uses the robust control toolbox
+systemnames ='G Wp Wu'; % Define systems
+inputvar ='[d(1); u(2)]'; % Input generalized plant
+input_to_G= '[u]';
+input_to_Wu= '[u]';
+input_to_Wp= '[d+G]';
+outputvar= '[Wp; Wu; d+G]'; % Output generalized plant
+sysoutname='P';
+sysic;
+P = ss(P);
+P = minreal(P);
+
+[Kdss,Nd,GAMd] = hinfsyn(P,1,2);
+disp(GAMd);
+Kdss = minreal(Kdss);
+Ldss = minreal(series(Kdss,Gss));
+
+##### SOURCE END #####
+--></body></html>
