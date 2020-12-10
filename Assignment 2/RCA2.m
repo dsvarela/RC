@@ -28,7 +28,7 @@ Gf = fr(G,0.4*2*pi);
 
 % Successive application of the RGA results in an anti-diagonal matrix,
 % suggesting we should pair 
-RGA = rga(Gf)
+RGA = rga(Gf);
 % RGAi = rga(RGA);
 % RGAii = rga(RGAi)
 
@@ -68,7 +68,7 @@ K = tf(Kss);
 Lss = minreal(series(Kss,Gss));
 Ltf = tf(Lss);
 T = feedback(Ltf , eye(2), -1);
-S = feedback(eye(2),G*K);
+S = feedback(eye(2),Ltf);
 T = minreal(T);
 S = minreal(S);
 
@@ -98,7 +98,7 @@ T2 = feedback(L2tf , eye(2), -1);
 S2 = feedback(eye(2),L2tf);
 T2 = minreal(T2);
 S2 = minreal(S2);
-
+DRP = minreal(series([g13;g23],S2));
 %%
 
 % These are good, don't touch 'em.
@@ -114,16 +114,16 @@ S2 = minreal(S2);
 M = 2;
 A = 10^(-4);
 wb = pi*2;
-wu12 = (s/M+wb)/(s+wb*A);
-wu11 = (s+wb*A)/(s/M+wb)/A;
+tt = 50;
+tb = 1;
+wu12 = (s/M+wb*tt)/(s+wb*tt*A);
+wu11 = (s+wb/tb*A)/(s/M+wb/tb)/A;
 
 M = 2;
 A = 10^(-4);
 wb = pi*2/100;
 wp11 = (s/M+wb)/(s+wb*A);
 
-bode(wu12,wu11);
-%%
 bode(wu11, wu12)
 %%
 Wp = wp11;
@@ -156,3 +156,19 @@ M = 2;
 A = 10^(-4);
 wb = pi*2/100;
 wp11 = (s/M+wb)/(s+wb*A);
+%%
+
+
+% Tdet = (s^8 + 34.28*s^7 + 140*s^6 + 457.2*s^5 + 1418*s^4 + 436.4*s^3 + 116.2*s^2 + 11.21*s + 0.5553);
+% Ldet = (s^8 + 34.28*s^7 + 19.71*s^6 + 404.8*s^5 + 100.5*s^4 + 29.11*s^3 + 2.686*s^2 + 0.1467*s + 3.67e-05);
+
+GN = tf(T2(1,1).den{1}, L2tf(1,1).den{1}); 
+nyquist(GN);
+
+iGN = eye(2)+L2tf;
+GN2 = iGN(1,1)*iGN(2,2) - iGN(2,1)*iGN(1,2);
+GN2 = minreal(GN2);
+%%
+Q = tf(K2ss)*S2;
+Q = minreal(ss(Q));
+%pzmap(Q);
